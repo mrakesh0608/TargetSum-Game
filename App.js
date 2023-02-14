@@ -1,27 +1,12 @@
 import React from 'react';
-import Game from './src/screens/Game';
+import Navigator from './src/navigation/Navigator';
 
-class App extends React.Component {
-
-    state = {
-        gameId: 1,
-    }
-
-    resetGame = () => {
-        this.setState(curr => {
-            return { gameId: (curr.gameId + 1) % 3 }
-        })
-    }
+export default class App extends React.Component {
 
     render() {
-        return <Game
-            key={this.state.gameId}
-            gameId={this.state.gameId}
-            randomNumCount={6}
-            timeLimit={10}
-            onPlayAgain={this.resetGame}
-        />
+        return (
+            <Navigator />
+        );
     }
 }
 
-export default App;
