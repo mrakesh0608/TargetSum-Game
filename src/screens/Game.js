@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, StyleSheet, Text, Button } from "react-native";
 
-import RandomNumber from './RandomNumber';
+import RandomNumber from '../components/RandomNumber';
 
-class Game extends React.Component {
+export default class Game extends React.Component {
 
     randomNum = Array.from({ length: this.props.randomNumCount }).map(
         () => 1 + Math.floor(10 * Math.random())
@@ -84,7 +84,11 @@ class Game extends React.Component {
                         />
                     )}
                 </View>
-                <Button title={this.state.gameStatus === 'PLAYING' ? 'Reset Game' : 'Play Again'} onPress={this.props.onPlayAgain} color='#bbb' />
+                <Button
+                    title={this.state.gameStatus === 'PLAYING' ? 'Reset Game' : 'Play Again'}
+                    onPress={this.props.onPlayAgain}
+                    color={this.state.gameStatus === 'PLAYING' ? '#bbb' : 'green'}
+                />
             </View>
         )
     }
@@ -137,5 +141,3 @@ Game.propTypes = {
     timeLimit: PropTypes.number.isRequired,
     onPlayAgain: PropTypes.func.isRequired,
 }
-
-export default Game;
