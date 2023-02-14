@@ -18,7 +18,10 @@ export default function ReviewForm({ navigation }) {
 
     const initialValues = { timeLimit: 10, randomNumCount: 6, minKeyNum: 1, maxKeyNum: 10 }
 
-    function createGame(val) { navigation.navigate('Game', val) }
+    function createGame(val) {
+        navigation.popToTop();
+        navigation.navigate('Game', val);
+    }
 
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -32,7 +35,7 @@ export default function ReviewForm({ navigation }) {
                     initialValues={initialValues}
                     validationSchema={ReviewSchema}
                     onSubmit={(val, actions) => {
-                        actions.resetForm({ values: '' });
+                        actions.resetForm();
                         createGame(val);
                     }}
                 >

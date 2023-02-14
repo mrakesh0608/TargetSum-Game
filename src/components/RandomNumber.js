@@ -26,13 +26,13 @@ export default class RandomNumber extends React.Component {
 
 const styles = StyleSheet.create({
     randomNum: {
-        backgroundColor: '#999',
-        width: 100,
-        padding: 4,
-        margin: 25,
-        fontSize: 35,
         textAlign: 'center',
+        backgroundColor: '#999',
         borderRadius: 10,
+        fontSize: 35,
+        margin: 25,
+        padding: 4,
+        width:100,
     },
     disabled: {
         opacity: 0.3

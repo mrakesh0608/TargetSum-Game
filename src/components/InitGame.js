@@ -68,15 +68,16 @@ export default class InitGame extends React.Component {
 
         if (this.state.remainingSec === 0) {
             haptic('Heavy');
-            return { gameStatus: 'LOST', gameEndMsg: 'Time Limit Exceeded !!' };
+            return { gameStatus: 'LOST', gameEndMsg: 'Time limit exceeded !!' };
         }
         if (sumSelected > this.target) {
             haptic('Warning');
-            return { gameStatus: 'LOST', gameEndMsg: 'Sum Exceeded !!' };
+            return { gameStatus: 'LOST', gameEndMsg: `Sum exceeded by ${sumSelected - this.target}  !!!` };
         }
         else if (sumSelected === this.target) {
+            const TAT = this.props.timeLimit - this.state.remainingSec;
             haptic('Heavy');
-            return { gameStatus: 'WON', gameEndMsg: 'You Won !!' };
+            return { gameStatus: 'WON', gameEndMsg: `You won within ${TAT} second${TAT > 1 ? 's' : ''}` };
         }
         else if (sumSelected < this.target) return { gameStatus: 'PLAYING', gameEndMsg: '' };
     }
@@ -86,20 +87,22 @@ export default class InitGame extends React.Component {
 
         return (
             <ScrollView contentContainerStyle={styles.container}>
+                <View style={styles.head}>
+                    <Text style={[
+                        styles.instruction,
+                        gameStatus === 'PLAYING' && styles.hidden,
+                    ]}>Note : May have more than 1 solution</Text>
 
-                <Text style={[
-                    styles.instruction,
-                    gameStatus === 'PLAYING' && styles.hidden,
-                ]}>Note : May have more than 1 solution</Text>
+                    <View style={styles.status}>
+                        <Text>Status : <Text style={styles[`STATUSTEXT_${gameStatus}`]}>{gameStatus}</Text></Text>
+                        <Text>Time: <Text style={this.state.remainingSec < 4 && styles.STATUSTEXT_LOST}>{this.state.remainingSec}s</Text></Text>
+                    </View>
 
-                <View style={styles.status}>
-                    <Text>Status : <Text style={styles[`STATUSTEXT_${gameStatus}`]}>{gameStatus}</Text></Text>
-                    <Text>Time: <Text style={this.state.remainingSec < 4 && styles.STATUSTEXT_LOST}>{this.state.remainingSec}s</Text></Text>
+                    <Text style={[styles.target, styles[`STATUS_${gameStatus}`]]}>{this.target}</Text>
+
                 </View>
 
-                <Text style={[styles.target, styles[`STATUS_${gameStatus}`]]}>{this.target}</Text>
-
-                <ScrollView contentContainerStyle={styles.randomContainer}>
+                <View style={styles.randomContainer}>
                     {this.shuffledRandomNum.map((randomNum, index) =>
                         <RandomNumber
                             key={index} id={index}
@@ -109,19 +112,20 @@ export default class InitGame extends React.Component {
                             isAns={gameStatus === 'PLAYING' ? false : randomNum.isSolNum}
                         />
                     )}
-                </ScrollView>
+                </View>
+                <View style={styles.footer}>
+                    <Text style={[
+                        styles.gameEndMsg,
+                        gameStatus === 'LOST' && styles.textRed,
+                        gameStatus === 'PLAYING' && styles.hidden,
+                    ]}>{this.state.gameEndMsg}</Text>
 
-                <Text style={[
-                    styles.gameEndMsg,
-                    gameStatus === 'LOST' && styles.textRed,
-                    gameStatus === 'PLAYING' && styles.hidden,
-                ]}>{this.state.gameEndMsg}</Text>
-
-                <Button
-                    title={gameStatus === 'PLAYING' ? 'Reset Game' : 'Play Again'}
-                    onPress={this.props.onPlayAgain}
-                    color={gameStatus === 'PLAYING' ? '#bbb' : 'green'}
-                />
+                    <Button
+                        title={gameStatus === 'PLAYING' ? 'Reset Game' : 'Play Again'}
+                        onPress={this.props.onPlayAgain}
+                        color={gameStatus === 'PLAYING' ? '#bbb' : 'green'}
+                    />
+                </View>
             </ScrollView >
         )
     }
