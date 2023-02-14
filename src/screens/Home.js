@@ -1,6 +1,6 @@
-import { View, FlatList, StyleSheet, TouchableOpacity, Text } from "react-native";
+import { FlatList, StyleSheet, ImageBackground } from "react-native";
 
-import DefaultScreenContainer from '../components/DefaultScreenContainer'
+import HomeBtn from '../components/HomeBtn';
 
 export default function Home({ navigation }) {
 
@@ -20,21 +20,15 @@ export default function Home({ navigation }) {
     ]
 
     return (
-        <DefaultScreenContainer>
-            <View style={styles.container}>
-                <FlatList
-                    data={list}
-                    renderItem={({ item }) =>
-                        <View style={styles.btnContainer}>
-                            <TouchableOpacity style={styles.btn} onPress={item.cb}>
-                                <Text style={styles.btnText}>{item.title}</Text>
-                            </TouchableOpacity>
-                        </View>
-                    }
-                    contentContainerStyle={styles.flatList}
-                />
-            </View>
-        </DefaultScreenContainer>
+        <ImageBackground source={require('../../assets/backg.jpg')} style={styles.container}>
+            <FlatList
+                data={list}
+                renderItem={({ item }) =>
+                    <HomeBtn title={item.title} onPress={item.cb} />
+                }
+                contentContainerStyle={styles.flatList}
+            />
+        </ImageBackground>
     );
 }
 
@@ -49,19 +43,4 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    btnContainer: {
-        margin: 20,
-    },
-    btn: {
-        backgroundColor: "#1e90ff",
-        padding: 15,
-        borderRadius: 10,
-    },
-    btnText: {
-        fontSize: 16,
-        color: 'white',
-        fontWeight: 'bold',
-        textAlign: 'center',
-        width: 150,
-    }
 })

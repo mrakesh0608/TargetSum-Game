@@ -2,7 +2,7 @@ import { View, Text, Button, ScrollView } from "react-native";
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { randomNumBetween } from '../util';
+import { randomNumBetween, haptic } from '../util';
 
 import RandomNumber from './RandomNumber';
 import styles from '../styles/InitGame';
@@ -50,9 +50,7 @@ export default class InitGame extends React.Component {
     componentDidUpdate(prevProps, prevState) {
         if (this.state.gameStatus === 'PLAYING' &&
             (this.state.remainingSec === 0 || prevState.selectedIds !== this.state.selectedIds)
-        ) this.setState(curr => ({
-            gameStatus: this.calcGameStatus()
-        }))
+        ) this.setState(curr => this.calcGameStatus());
 
         if (this.state.gameStatus !== 'PLAYING') clearInterval(this.intervalId);
     }
@@ -69,18 +67,18 @@ export default class InitGame extends React.Component {
         // console.log(sumSelected);
 
         if (this.state.remainingSec === 0) {
-            this.setState({ gameEndMsg: 'Time Limit Exceeded !!' })
-            return 'LOST';
+            haptic('Error');
+            return { gameStatus: 'LOST', gameEndMsg: 'Time Limit Exceeded !!' };
         }
         if (sumSelected > this.target) {
-            this.setState({ gameEndMsg: 'Sum Exceeded !!' })
-            return 'LOST';
+            haptic('Heavy');
+            return { gameStatus: 'LOST', gameEndMsg: 'Sum Exceeded !!' };
         }
         else if (sumSelected === this.target) {
-            this.setState({ gameEndMsg: 'You Won !!' })
-            return 'WON';
+            haptic('Success');
+            return { gameStatus: 'WON', gameEndMsg: 'You Won !!' };
         }
-        else if (sumSelected < this.target) return 'PLAYING';
+        else if (sumSelected < this.target) return { gameStatus: 'PLAYING', gameEndMsg: '' };
     }
 
     render() {
