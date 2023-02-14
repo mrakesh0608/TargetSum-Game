@@ -1,20 +1,27 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import Game from './src/Game';
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+class App extends React.Component {
+
+    state = {
+        gameId: 1,
+    }
+
+    resetGame = () => {
+        this.setState(curr => {
+            return { gameId: (curr.gameId + 1) % 3 }
+        })
+    }
+
+    render() {
+        return <Game
+            key={this.state.gameId}
+            gameId={this.state.gameId}
+            randomNumCount={6}
+            timeLimit={10}
+            onPlayAgain={this.resetGame}
+        />
+    }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
