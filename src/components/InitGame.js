@@ -67,15 +67,15 @@ export default class InitGame extends React.Component {
         // console.log(sumSelected);
 
         if (this.state.remainingSec === 0) {
-            haptic('Error');
+            haptic('Heavy');
             return { gameStatus: 'LOST', gameEndMsg: 'Time Limit Exceeded !!' };
         }
         if (sumSelected > this.target) {
-            haptic('Heavy');
+            haptic('Warning');
             return { gameStatus: 'LOST', gameEndMsg: 'Sum Exceeded !!' };
         }
         else if (sumSelected === this.target) {
-            haptic('Success');
+            haptic('Heavy');
             return { gameStatus: 'WON', gameEndMsg: 'You Won !!' };
         }
         else if (sumSelected < this.target) return { gameStatus: 'PLAYING', gameEndMsg: '' };
