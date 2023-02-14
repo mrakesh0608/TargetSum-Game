@@ -14,7 +14,7 @@ export default function HomeStack() {
                 backgroundColor: '#ccc',
                 height: 80
             },
-            headerTitleAlign: 'center'
+            headerTitleAlign: 'center',
         }}>
             <Stack.Screen name="Home" component={Home} options={{
                 headerShown: false,

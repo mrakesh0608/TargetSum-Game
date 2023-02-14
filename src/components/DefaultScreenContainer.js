@@ -1,6 +1,6 @@
 import { View, StyleSheet } from "react-native";
 
-export default function Card(props) {
+export default function DefaultScreenContainer(props) {
     return (
         <View style={styles.container}>
             {props.children}
@@ -11,8 +11,7 @@ export default function Card(props) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingVertical: 10,
-        backgroundColor: '#eee',
-        paddingTop: 22,
+        // paddingVertical: 10,
+        // paddingTop: 22,
     },
 })
