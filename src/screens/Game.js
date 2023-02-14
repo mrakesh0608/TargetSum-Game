@@ -65,29 +65,29 @@ export default class Game extends React.Component {
     }
 
     render() {
-        const gameStatus = this.gameStatus;
+        const gameStatus = this.state.gameStatus;
         return (
             <View style={styles.container}>
                 <View style={styles.status}>
-                    <Text>Status : <Text style={styles[`STATUSTEXT_${this.state.gameStatus}`]}>{this.state.gameStatus}</Text></Text>
+                    <Text>Status : <Text style={styles[`STATUSTEXT_${gameStatus}`]}>{gameStatus}</Text></Text>
                     <Text>Time: {this.state.remainingSec}s</Text>
                 </View>
-                <Text style={[styles.target, styles[`STATUS_${this.state.gameStatus}`]]}>{this.target}</Text>
+                <Text style={[styles.target, styles[`STATUS_${gameStatus}`]]}>{this.target}</Text>
 
                 <View style={styles.randomContainer}>
                     {this.shuffledRandomNum.map((randomNum, index) =>
                         <RandomNumber
                             key={index} id={index}
                             number={randomNum}
-                            isDisabled={this.isNumSelected(index) || this.state.gameStatus !== 'PLAYING'}
+                            isDisabled={this.isNumSelected(index) || gameStatus !== 'PLAYING'}
                             onPress={this.selectNum}
                         />
                     )}
                 </View>
                 <Button
-                    title={this.state.gameStatus === 'PLAYING' ? 'Reset Game' : 'Play Again'}
+                    title={gameStatus === 'PLAYING' ? 'Reset Game' : 'Play Again'}
                     onPress={this.props.onPlayAgain}
-                    color={this.state.gameStatus === 'PLAYING' ? '#bbb' : 'green'}
+                    color={gameStatus === 'PLAYING' ? '#bbb' : 'green'}
                 />
             </View>
         )
