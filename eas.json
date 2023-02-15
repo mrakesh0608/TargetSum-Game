@@ -1,5 +1,4 @@
 {
-    "_comment": "eas build -p android --profile preview",
     "build": {
         "preview": {
             "android": {
