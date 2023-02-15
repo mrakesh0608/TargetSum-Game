@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from 'prop-types';
 
-import { Text, StyleSheet, TouchableOpacity } from "react-native";
+import { Text, StyleSheet, TouchableOpacity, Animated } from "react-native";
 
 export default class RandomNumber extends React.Component {
 
@@ -14,11 +14,12 @@ export default class RandomNumber extends React.Component {
     render() {
         return (
             <TouchableOpacity onPress={this.handlePress}>
-                <Text style={[
+                <Animated.Text style={[
                     styles.randomNum,
                     this.props.isDisabled && styles.disabled,
-                    this.props.isAns && styles.ans
-                ]}>{this.props.number}</Text>
+                    this.props.isAns && styles.ans,
+                    this.props.isAns && { backgroundColor: this.props.aniBgColor },
+                ]}>{this.props.number}</Animated.Text>
             </TouchableOpacity>
         )
     }
@@ -32,14 +33,14 @@ const styles = StyleSheet.create({
         fontSize: 35,
         margin: 25,
         padding: 4,
-        width:100,
+        width: 100,
     },
     disabled: {
         opacity: 0.3
     },
     ans: {
         backgroundColor: 'lightgreen',
-        opacity: 0.5,
+        opacity: 0.6,
     }
 })
 

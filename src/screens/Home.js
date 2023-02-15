@@ -1,8 +1,12 @@
 import { FlatList, StyleSheet, ImageBackground } from "react-native";
 
-import HomeBtn from '../components/HomeBtn';
+import HomeBtn from '../components/HomeBtn'
+import { windowHeight } from "../util";
+import { useBgMusicContext } from '../hooks/useBgMusicContext';
 
 export default function Home({ navigation }) {
+
+    const { bgMusic } = useBgMusicContext();
 
     function NewGameCB() {
         navigation.navigate('Game', {
@@ -12,19 +16,32 @@ export default function Home({ navigation }) {
             maxKeyNum: 10,
         })
     }
+
     function CustomGameCB() { navigation.navigate('Custom Game') }
 
     const list = [
-        { title: "New Game", navigation: 'Game', cb: NewGameCB },
-        { title: "Custom Game", navigation: "Custom Game", cb: CustomGameCB },
+        {
+            title: "New Game",
+            navigation: 'Game',
+            onPress: NewGameCB
+        },
+        {
+            title: "Custom Game",
+            navigation: "Custom Game",
+            onPress: CustomGameCB
+        },
+        {
+            title: bgMusic.title,
+            onPress: bgMusic.onPress
+        },
     ]
 
     return (
-        <ImageBackground source={require('../../assets/backg.jpg')} style={styles.container}>
+        <ImageBackground source={require('../../assets/backg.gif')} style={styles.container} >
             <FlatList
                 data={list}
                 renderItem={({ item }) =>
-                    <HomeBtn title={item.title} onPress={item.cb} />
+                    <HomeBtn title={item.title} onPress={item.onPress} />
                 }
                 contentContainerStyle={styles.flatList}
             />
@@ -35,12 +52,13 @@ export default function Home({ navigation }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
+        flexDirection: 'row',
+        alignItems: 'flex-end',
+
     },
     flatList: {
-        flex: 1,
+        // backgroundColor: 'red',
         alignItems: 'center',
-        justifyContent: 'center',
+        marginBottom: Math.floor(windowHeight * 0.14),
     },
 })

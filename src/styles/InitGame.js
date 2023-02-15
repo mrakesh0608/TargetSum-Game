@@ -35,9 +35,22 @@ export default StyleSheet.create({
         justifyContent: 'center',
     },
     status: {
+        // flex:1,
+        // backgroundColor: 'pink',
         flexDirection: 'row',
         justifyContent: 'space-between',
+        alignItems: 'center',
         paddingVertical: 20,
+    },
+    statusText: {
+        flex: 1,
+        marginHorizontal: 3,
+        fontSize: 13,
+        textAlign: 'center',
+        // backgroundColor: 'green'
+    },
+    statusText1: {
+        textAlign: 'left'
     },
     STATUS_PLAYING: {
         backgroundColor: '#bbb'

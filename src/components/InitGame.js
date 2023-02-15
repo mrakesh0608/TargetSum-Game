@@ -1,8 +1,8 @@
-import { View, Text, Button, ScrollView } from "react-native";
+import { View, Text, Button, ScrollView, Animated } from "react-native";
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { randomNumBetween, haptic } from '../util';
+import { randomNumBetween, haptic, AnimateColor } from '../util';
 
 import RandomNumber from './RandomNumber';
 import styles from '../styles/InitGame';
@@ -47,12 +47,29 @@ export default class InitGame extends React.Component {
 
     componentWillUnmount() { clearInterval(this.intervalId) }
 
+    aniAnsBgColor = new AnimateColor({
+        type: 'timing', duration: 1000,
+        initialValue: "rgb(170,170,170)", finalValue: "rgb(144, 238, 144)",
+    })
+
+    aniTargetBgColor = new AnimateColor({
+        type: 'timing', duration: 750,
+        initialValue: "rgb(170,170,170)", finalValue: "rgb(255,0,0)",
+        startCallBack: () => { this.aniAnsBgColor.doAni() }
+    })
+
+
     componentDidUpdate(prevProps, prevState) {
         if (this.state.gameStatus === 'PLAYING' &&
             (this.state.remainingSec === 0 || prevState.selectedIds !== this.state.selectedIds)
         ) this.setState(curr => this.calcGameStatus());
 
-        if (this.state.gameStatus !== 'PLAYING') clearInterval(this.intervalId);
+        if (this.state.gameStatus !== 'PLAYING') {
+            clearInterval(this.intervalId);
+
+            if (this.state.gameStatus === 'WON') this.aniAnsBgColor.doAni();
+            else this.aniTargetBgColor.doAni();
+        }
     }
     isNumSelected = (numIndex) => this.state.selectedIds.indexOf(numIndex) >= 0;
 
@@ -94,11 +111,20 @@ export default class InitGame extends React.Component {
                     ]}>Note : May have more than 1 solution</Text>
 
                     <View style={styles.status}>
-                        <Text>Status : <Text style={styles[`STATUSTEXT_${gameStatus}`]}>{gameStatus}</Text></Text>
-                        <Text>Time: <Text style={this.state.remainingSec < 4 && styles.STATUSTEXT_LOST}>{this.state.remainingSec}s</Text></Text>
+                        {!this.props.hideStatus &&
+                            <Text style={styles.statusText}>Status : <Text style={styles[`STATUSTEXT_${gameStatus}`]}>{gameStatus}</Text></Text>
+                        }
+                        {this.props.displayWinnings &&
+                            <Text style={styles.statusText}>Winnings : {this.props.numWinnings}</Text>
+                        }
+                        <Text style={styles.statusText}>Time: <Text style={this.state.remainingSec < 4 && styles.STATUSTEXT_LOST}>{this.state.remainingSec}s</Text></Text>
                     </View>
 
-                    <Text style={[styles.target, styles[`STATUS_${gameStatus}`]]}>{this.target}</Text>
+                    <Animated.Text style={[
+                        styles.target,
+                        styles[`STATUS_${gameStatus}`],
+                        { backgroundColor: this.aniTargetBgColor.eleColor }
+                    ]}>{this.target}</Animated.Text>
 
                 </View>
 
@@ -110,6 +136,7 @@ export default class InitGame extends React.Component {
                             isDisabled={this.isNumSelected(index) || gameStatus !== 'PLAYING'}
                             onPress={this.selectNum}
                             isAns={gameStatus === 'PLAYING' ? false : randomNum.isSolNum}
+                            aniBgColor={this.aniAnsBgColor.eleColor}
                         />
                     )}
                 </View>
@@ -122,7 +149,7 @@ export default class InitGame extends React.Component {
 
                     <Button
                         title={gameStatus === 'PLAYING' ? 'Reset Game' : 'Play Again'}
-                        onPress={this.props.onPlayAgain}
+                        onPress={() => this.props.onPlayAgain({ gameStatus })}
                         color={gameStatus === 'PLAYING' ? '#bbb' : 'green'}
                     />
                 </View>

@@ -1,17 +1,17 @@
 import { StatusBar } from 'expo-status-bar';
-
-import React from 'react';
 import { View } from 'react-native';
 
+import { BgMusicContextProvider } from './src/context/BgMusicContext';
 import Navigator from './src/navigation/Navigator';
 
-export default class App extends React.Component {
-    render() {
-        return (
+export default function App() {
+
+    return (
+        <BgMusicContextProvider>
             <View style={{ flex: 1 }}>
                 <Navigator />
                 <StatusBar style='dark' />
             </View>
-        );
-    }
+        </BgMusicContextProvider>
+    );
 }

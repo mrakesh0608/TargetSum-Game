@@ -23,6 +23,7 @@ export default StyleSheet.create({
         borderRadius: 6,
     },
     errorText: {
+        // backgroundColor:'pink',
         color: 'crimson',
         fontWeight: 'bold',
         marginBottom: 10,
@@ -45,5 +46,21 @@ export default StyleSheet.create({
         fontStyle: 'italic',
         textAlign: 'justify',
         paddingLeft: 10,
-    }
+    },
+    section: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 20,
+        // backgroundColor: 'pink',
+    },
+    checkbox: {
+        marginRight: 14,
+        borderColor: '#bbb',
+        borderWidth: 1,
+    },
+    paragraph: {
+        flex: 1,
+        fontSize: 15,
+        textAlign: 'justify',
+    },
 });

@@ -1,6 +1,8 @@
-import { View, Text, TextInput, TouchableWithoutFeedback, Keyboard } from "react-native";
+import { View, Text, TextInput, TouchableWithoutFeedback, Keyboard, TouchableOpacity } from "react-native";
 import { Formik } from "formik";
 import * as yup from 'yup';
+
+import Checkbox from 'expo-checkbox';
 
 import MyButton from '../components/MyButton';
 import styles from '../styles/CustomGame';
@@ -10,13 +12,13 @@ const ReviewSchema = yup.object({
     timeLimit: yup.number().min(5).max(30).required(),
     randomNumCount: yup.number().min(4).max(10).required(),
 
-    minKeyNum: yup.number().min(1).max(999).required(),
-    maxKeyNum: yup.number().min(1).max(999).required(),
+    minKeyNum: yup.number().min(1).max(990).required().lessThan(yup.ref('maxKeyNum')),
+    maxKeyNum: yup.number().min(10).max(999).required().moreThan(yup.ref('minKeyNum')),
 })
 
-export default function ReviewForm({ navigation }) {
+export default function CustomGame({ navigation }) {
 
-    const initialValues = { timeLimit: 10, randomNumCount: 6, minKeyNum: 1, maxKeyNum: 10 }
+    const initialValues = { timeLimit: 10, randomNumCount: 6, minKeyNum: 1, maxKeyNum: 10, displayWinnings: false, hideStatus: false }
 
     function createGame(val) {
         navigation.popToTop();
@@ -82,6 +84,26 @@ export default function ReviewForm({ navigation }) {
                                 keyboardType='numeric'
                             />
                             <Text style={styles.errorText}>{props.touched.maxKeyNum && props.errors.maxKeyNum}</Text>
+
+                            <TouchableOpacity style={styles.section} onPress={() => props.setFieldValue('displayWinnings', !props.values.displayWinnings)}>
+                                <Checkbox
+                                    style={styles.checkbox}
+                                    value={props.values.displayWinnings}
+                                    onValueChange={val => props.setFieldValue('displayWinnings', val)}
+                                    color={props.values.displayWinnings && '#1e90ff'}
+                                />
+                                <Text style={styles.paragraph}>Display the winning times of the game in sequence</Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity style={styles.section} onPress={() => props.setFieldValue('hideStatus', !props.values.hideStatus)}>
+                                <Checkbox
+                                    style={styles.checkbox}
+                                    value={props.values.hideStatus}
+                                    onValueChange={val => props.setFieldValue('hideStatus', val)}
+                                    color={props.values.hideStatus && '#1e90ff'}
+                                />
+                                <Text style={styles.paragraph}>Hide status</Text>
+                            </TouchableOpacity>
 
                             <MyButton text='Start' onPress={props.handleSubmit} disabled={!props.isValid} />
                         </View>
