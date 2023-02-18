@@ -7,7 +7,7 @@ import Checkbox from 'expo-checkbox';
 import MyButton from '../components/MyButton';
 import styles from '../styles/CustomGame';
 
-const ReviewSchema = yup.object({
+const GameSchema = yup.object({
 
     timeLimit: yup.number().min(5).max(30).required(),
     randomNumCount: yup.number().min(4).max(10).required(),
@@ -35,7 +35,7 @@ export default function CustomGame({ navigation }) {
                 </View>
                 <Formik
                     initialValues={initialValues}
-                    validationSchema={ReviewSchema}
+                    validationSchema={GameSchema}
                     onSubmit={(val, actions) => {
                         actions.resetForm();
                         createGame(val);
